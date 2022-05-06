@@ -102,6 +102,43 @@ python manage.py csv_to_base
 
 Файл со скриптом находится в директории reviews/management/commands/
 
+#### Запуск приложения в контейнерах
+
+- Склонируйте репозиторий на свой диск
+- В директории infra/ создайте файл .env, в котором опишите переменные: '''DB_ENGINE=django.db.backends.postgresql''' '''DB_NAME= # название БД\ POSTGRES_USER= # ваше имя пользователя''' '''POSTGRES_PASSWORD= # пароль для доступа к БД''' '''DB_HOST=db''' '''DB_PORT=5432'''
+- из директории infra/ соберите образ командой
+
+```
+docker-compose up -d --build
+```
+
+- Выполните миграции
+
+```
+docker-compose exec web python manage.py migrate
+```
+
+- Соберите статику
+
+```
+docker-compose exec web python manage.py collectstatic --no-input
+```
+
+- Зарегистрируйте суперюзера
+
+```
+docker-compose exec web python manage.py createsuperuser
+```
+
+#### Содержимое .env файла
+
+DB_ENGINE=django.db.backends.postgresql - указываем, что работаем с postgresql
+DB_NAME - указываем имя БД
+POSTGRES_USER - необходимо указать логин, который будет использоваться для подключения к БД
+POSTGRES_PASSWORD - необходимо указать пароль к логину для подключения к БД
+DB_HOST=db - название сервиса (контейнера)
+DB_PORT=5432 - порт для подключения к БД
+
 #### Авторы проекта
 
 _Абрамсон Арсений_ [ArS181](https://github.com/ArS181)
