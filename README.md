@@ -1,54 +1,43 @@
-![Yamdb Workflow Status](https://github.com/elvir906/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master&event=push)
+## YaMDb - сервис отзывов на произведения
 
-# YaMDb
+[![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
+[![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
+[![SQLite](https://img.shields.io/badge/-SQLite-464646?style=flat-square&logo=SQLite)](https://www.sqlite.org/index.html)
 
-## Сервис для отзывов
 
-### Сервис собирает отзывы пользователей на различные произведения в категориях: «Книги», «Фильмы», «Музыка». Список категорий может быть расширен администратором. Также произведению может быть присвоен жанр из списка предустановленных, либо добавленный администратором. Пользователи оставляют к произведениям отзывы и ставят  оценку; из пользовательских оценок формируется рейтинг произведения. На одно произведение пользователь может оставить только один отзыв. Взаимодействие с сервисом реализовано с помщью API.
+Сервис собирает отзывы пользователей на различные произведения в категориях: «Книги», «Фильмы», «Музыка». Список категорий может быть расширен администратором. Также произведению может быть присвоен жанр из списка предустановленных, либо добавленный администратором. Пользователи оставляют к произведениям отзывы и ставят  оценку; из пользовательских оценок формируется рейтинг произведения. На одно произведение пользователь может оставить только один отзыв. Взаимодействие с сервисом реализовано с помщью API.
 
-### Технологии
+### Запуск проекта на локальной машине
 
-- Python 3.9.9
-- Django 2.2.19
-- Django Rest Framework 3.12.4
-- Simple JWT 5.0.0
-
-### Как запустить проект
-
-Клонировать репозиторий и перейти в него в командной строке:
-
+Склонировать файлы проекта:
 ```
 git clone https://github.com/elvir906/yamdb
 ```
-
+Перейти в директорию с проектом:
 ```
 cd api_yamdb
 ```
 
 Cоздать и активировать виртуальное окружение:
-
 ```
 python -m venv venv
 ```
-
 ```
 source venv/Scripts/activate
 ```
 
 Установить зависимости из файла requirements.txt:
-
 ```
 pip install -r requirements.txt
 ```
 
 Выполнить миграции:
-
 ```
 python manage.py migrate
 ```
 
-В папке с файлом manage.py выполнить команду:
-
+Запустить проект:
 ```
 python manage.py runserver
 ```
@@ -58,25 +47,22 @@ python manage.py runserver
 Для ознакомления с API следует открыть ReDoc.
 
 Для этого запустите сервер командой:
-
 ```
 python manage.py runserver
 ```
 
 В окне браузера откройте страницу по адресу:
-
 ```
 http://127.0.0.1:8000/redoc/
 ```
 
-#### Заполнение базы данных из файлов *.csv
+### Наполнение базы данных из файлов *.csv
 
 Проект имеет возможность с помощью специальной команды наполнить БД данными из файлов *.csv
 Данный способ хорош тем, что данные для заполнения можно подготовить даже в приложении "Блокнот",
 а наполнение осуществляется одной командой в консоли терминала.
 
 Для начала необходимо проверить, чтобы имена csv-файлов с данными были следующими:
-
 ```
 category.csv
 comments.csv
@@ -93,7 +79,6 @@ users.csv
 Для корректной работы БД необходимо убедиться, что все поля таблиц заполнены.
 
 Для заполнения БД выполните команду:
-
 ```
 python manage.py csv_to_base
 ```
@@ -102,47 +87,38 @@ python manage.py csv_to_base
 
 Файл со скриптом находится в директории reviews/management/commands/
 
-#### Запуск приложения в контейнерах
+### Запуск приложения в контейнерах
 
-- Склонируйте репозиторий на свой диск
-- В директории infra/ создайте файл .env, в котором опишите переменные: '''DB_ENGINE=django.db.backends.postgresql''' '''DB_NAME= # название БД\ POSTGRES_USER= # ваше имя пользователя''' '''POSTGRES_PASSWORD= # пароль для доступа к БД''' '''DB_HOST=db''' '''DB_PORT=5432'''
-- из директории infra/ соберите образ командой
+Склонируйте репозиторий на свой диск. В директории infra/ создайте файл .env, в котором опишите переменные:
+```
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME= #название БД
+POSTGRES_USER= #ваше имя пользователя
+POSTGRES_PASSWORD= #пароль для доступа к БД
+DB_HOST=db
+DB_PORT=5432
+```
 
+Из директории infra/ соберите образ командой:
 ```
 docker-compose up -d --build
 ```
 
-- Выполните миграции
-
+Выполните миграции:
 ```
 docker-compose exec web python manage.py migrate
 ```
 
-- Соберите статику
-
+Соберите статику:
 ```
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 
-- Зарегистрируйте суперюзера
-
+Зарегистрируйте суперюзера:
 ```
 docker-compose exec web python manage.py createsuperuser
 ```
 
-#### Содержимое .env файла
+### Авторы проекта:
 
-DB_ENGINE=django.db.backends.postgresql - указываем, что работаем с postgresql
-DB_NAME - указываем имя БД
-POSTGRES_USER - необходимо указать логин, который будет использоваться для подключения к БД
-POSTGRES_PASSWORD - необходимо указать пароль к логину для подключения к БД
-DB_HOST=db - название сервиса (контейнера)
-DB_PORT=5432 - порт для подключения к БД
-
-#### Авторы проекта
-
-_Абрамсон Арсений_ [ArS181](https://github.com/ArS181)
-
-_Антон Лукин_ [AntonLukin1986](https://github.com/AntonLukin1986)
-
-_Эльвир Давлетгареев_ [elvir906](https://github.com/elvir906)
+Эльвир Давлетгареев [elvir906](https://github.com/elvir906), Абрамсон Арсений [ArS181](https://github.com/ArS181), Антон Лукин [AntonLukin1986](https://github.com/AntonLukin1986)
