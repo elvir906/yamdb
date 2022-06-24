@@ -16,7 +16,7 @@ git clone https://github.com/elvir906/yamdb
 ```
 Перейти в директорию с проектом:
 ```
-cd api_yamdb
+cd yamdb
 ```
 
 Cоздать и активировать виртуальное окружение:
